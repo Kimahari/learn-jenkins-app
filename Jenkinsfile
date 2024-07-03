@@ -11,7 +11,7 @@ pipeline {
                 '''
             }
         }
-        stage('install') {
+        stage('Install') {
             agent {
                 docker {
                     image 'node:22-alpine'
@@ -26,34 +26,38 @@ pipeline {
                 '''
             }
         }
-        stage('build') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
+        stage('Build and Test in Parallel') {
+            parallel {
+                stage('Build') {
+                    agent {
+                        docker {
+                            image 'node:22-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            echo "Running inside Node 22 container"
+                            echo "Building the project..."
+                            npm run build
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    echo "Running inside Node 22 container"
-                    echo "Building the project..."
-                    npm run build
-                '''
-            }
-        }
-        stage('build') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
+                stage('Test') {
+                    agent {
+                        docker {
+                            image 'node:22-alpine'
+                            reuseNode true
+                        }
+                    }
+                    steps {
+                        sh '''
+                            echo "Running inside Node 22 container"
+                            echo "Testing the project..."
+                            npm run test
+                        '''
+                    }
                 }
-            }
-            steps {
-                sh '''
-                    echo "Running inside Node 22 container"
-                    echo "Testing the project..."
-                    npm run test
-                '''
             }
         }
     }
