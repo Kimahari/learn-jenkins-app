@@ -79,7 +79,7 @@ pipeline {
                     echo "Testing the project..."
                     node_modules/.bin/serve -s build &
                     sleep 10
-                    npx playwright test --reporter=junit
+                    npx playwright test --reporter junit --outputDir=test-results/
                 '''
             }
         }
