@@ -41,5 +41,20 @@ pipeline {
                 '''
             }
         }
+        stage('build') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running inside Node 22 container"
+                    echo "Testing the project..."
+                    npm run test
+                '''
+            }
+        }
     }
 }
