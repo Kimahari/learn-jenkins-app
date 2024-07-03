@@ -87,7 +87,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy') {
+        stage('Deploy Netlify') {
             agent {
                 docker {
                     image 'node:22-alpine'
