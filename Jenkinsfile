@@ -88,7 +88,7 @@ pipeline {
     post {
         always {
             echo 'This will always run'
-            junit 'test-results/**/*.xml'
+            junit 'jest-results/**/*.xml'
         }
     }
 }
