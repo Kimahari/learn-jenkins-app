@@ -11,5 +11,20 @@ pipeline {
                 '''
             }
         }
+        stage('with docker') {
+            agent {
+                docker {
+                    image 'node:22'
+                    args '-p 3000:3000'
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running inside Node 22 container"
+                    node --version
+                    npm --version
+                '''
+            }
+        }
     }
 }
