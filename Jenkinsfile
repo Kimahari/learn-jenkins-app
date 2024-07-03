@@ -22,7 +22,7 @@ pipeline {
                 sh '''
                     echo "Running inside Node 22 container"
                     echo "Installing dependencies..."
-                    npm install
+                    npm ci
                 '''
             }
         }
