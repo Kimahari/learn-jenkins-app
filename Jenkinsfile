@@ -79,7 +79,7 @@ pipeline {
                     echo "Testing the project..."
                     node_modules/.bin/serve -s build &
                     sleep 10
-                    npx playwright test --reporter=html
+                    npx playwright test --reporter=junit
                 '''
             }
         }
@@ -88,7 +88,7 @@ pipeline {
     post {
         always {
             junit 'jest-results/**/*.xml'
-            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
+            //publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright HTML Report', reportTitles: '', useWrapperFileDirectly: true])
         }
     }
 }
