@@ -27,40 +27,37 @@ pipeline {
             }
         }
         stage('Build and Test in Parallel') {
-            parallel firstBranch: {
-                    stage('Build') {
-                        agent {
-                            docker {
-                                image 'node:22-alpine'
-                                reuseNode true
-                            }
-                        }
-                        steps {
-                            sh '''
-                                echo "Running inside Node 22 container"
-                                echo "Building the project..."
-                                npm run build
-                            '''
+            parallel {
+                stage('Build') {
+                    agent {
+                        docker {
+                            image 'node:22-alpine'
+                            reuseNode true
                         }
                     }
-            }, secondBranch: {
-                    stage('Test') {
-                        agent {
-                            docker {
-                                image 'node:22-alpine'
-                                reuseNode true
-                            }
-                        }
-                        steps {
-                            sh '''
-                                echo "Running inside Node 22 container"
-                                echo "Testing the project..."
-                                npm run test
-                            '''
+                    steps {
+                        sh '''
+                            echo "Running inside Node 22 container"
+                            echo "Building the project..."
+                            npm run build
+                        '''
+                    }
+                }
+                stage('Test') {
+                    agent {
+                        docker {
+                            image 'node:22-alpine'
+                            reuseNode true
                         }
                     }
-            },
-            failFast: true
+                    steps {
+                        sh '''
+                            echo "Running inside Node 22 container"
+                            echo "Testing the project..."
+                            npm run test
+                        '''
+                    }
+                }
             }
         }
     }
