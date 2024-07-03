@@ -77,7 +77,7 @@ pipeline {
                 sh '''
                     echo "Running inside Node playwright container"
                     echo "Testing the project..."
-                    npm run install -g serve
+                    #npm run install -g serve
                     npx serve -s build
                     npx playwright test
                 '''
