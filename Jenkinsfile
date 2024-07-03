@@ -2,21 +2,6 @@ pipeline {
     agent any
 
     stages {
-        // this is a comment
-
-        /*
-            this is a block comment
-        */
-        
-        stage('w/o docker') {
-            steps {
-                sh '''
-                    echo "Without docker"
-                    ls -la
-                    touch container-no.txt
-                '''
-            }
-        }
         stage('Install') {
             agent {
                 docker {
