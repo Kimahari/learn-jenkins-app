@@ -11,7 +11,7 @@ pipeline {
                 '''
             }
         }
-        stage('with docker') {
+        stage('install') {
             agent {
                 docker {
                     image 'node:22-alpine'
@@ -22,10 +22,22 @@ pipeline {
             steps {
                 sh '''
                     echo "Running inside Node 22 container"
-                    node --version
-                    npm --version
                     echo "Installing dependencies..."
                     npm install
+                '''
+            }
+        }
+        stage('build') {
+            agent {
+                docker {
+                    image 'node:22-alpine'
+                    args '-p 3000:3000'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running inside Node 22 container"
                     echo "Building the project..."
                     npm run build
                 '''
