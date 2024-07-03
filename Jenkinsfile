@@ -24,6 +24,8 @@ pipeline {
                     echo "Running inside Node 22 container"
                     node --version
                     npm --version
+                    echo "Installing dependencies..."
+                    npm install
                 '''
             }
         }
