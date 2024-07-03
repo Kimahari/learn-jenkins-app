@@ -77,7 +77,8 @@ pipeline {
                 sh '''
                     echo "Running inside Node playwright container"
                     echo "Testing the project..."
-                    node_modules/.bin/serve -s build
+                    node_modules/.bin/serve -s build &
+                    sleep 10
                     npx playwright test
                 '''
             }
