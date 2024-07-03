@@ -6,3 +6,10 @@ test('renders learn Jenkins link', () => {
   const linkElement = screen.getByText(/learn Jenkins/i);
   expect(linkElement).toBeInTheDocument();
 });
+
+
+test('renders learn Jenkins link 2', () => {
+  render(<App />);
+  const linkElement = screen.getByText(/learn Jenkins/i);
+  expect(linkElement).toBeInTheDocument();
+});
