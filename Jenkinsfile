@@ -70,12 +70,13 @@ pipeline {
                             npm run test
                         '''
                     }
-                }
-                post {
-                    always {
-                        junit 'jest-results/**/*.xml'
+                    post {
+                        always {
+                            junit 'jest-results/**/*.xml'
+                        }
                     }
                 }
+                
             }
         }
     }
