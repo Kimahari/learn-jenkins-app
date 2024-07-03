@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    environment {
+        NETLIFY_SITE_ID = '2a01736a-dcb2-4feb-b364-55e639aa0b9d'
+    }
+
     stages {
         stage('Install') {
             agent {
@@ -94,7 +98,7 @@ pipeline {
                     echo "Running inside Node 22 container"
                     echo "Testing the project..."
                     npm install netlify-cli
-                    node_modules/.bin/netlify -version
+                    node_modules/.bin/netlify --version
                 '''
             }
             post {
