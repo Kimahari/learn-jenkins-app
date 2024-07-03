@@ -2,6 +2,12 @@ pipeline {
     agent any
 
     stages {
+        // this is a comment
+
+        /*
+            this is a block comment
+        */
+        
         stage('w/o docker') {
             steps {
                 sh '''
@@ -58,6 +64,23 @@ pipeline {
                         '''
                     }
                 }
+            }
+        }
+        stage('E2E-Test') {
+            agent {
+                docker {
+                    image 'mcr.microsoft.com/playwright:v1.45.1-jammy'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running inside Node playwright container"
+                    echo "Testing the project..."
+                    npm run install -g serve
+                    npx serve -s build
+                    npx playwright test
+                '''
             }
         }
     }
