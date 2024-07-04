@@ -101,7 +101,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Running inside Node 22 container"
+                    echo "Running inside Node 22 container..."
                     echo "Publishing to Netlify..."
                     node_modules/.bin/netlify --version
                     node_modules/.bin/netlify status
