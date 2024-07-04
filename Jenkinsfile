@@ -51,7 +51,7 @@ pipeline {
                                 sh '''
                                     echo "Running inside Node 22 container"
                                     echo "Building Docker the project..."
-                                    docker build -t learning-jenkins-app:${GIT_BRANCH} .
+                                    docker build -t learning-jenkins-app:${BRANCH_NAME} .
                                 '''
                             }
                         }
