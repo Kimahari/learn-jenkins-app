@@ -98,7 +98,6 @@ pipeline {
                 sh '''
                     echo "Running inside Node 22 container"
                     echo "Publishing to Netlify..."
-                    npm install netlify-cli
                     node_modules/.bin/netlify --version
                     node_modules/.bin/netlify status
                     node_modules/.bin/netlify deploy --dir=build --prod
