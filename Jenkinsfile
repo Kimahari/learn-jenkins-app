@@ -92,28 +92,6 @@ pipeline {
                 }
             }
         }
-        stage('Deploy Netlify') {
-            agent {
-                docker {
-                    image 'node:22-alpine'
-                    reuseNode true
-                }
-            }
-            steps {
-                sh '''
-                    echo "Running inside Node 22 container"
-                    echo "Publishing to Netlify..."
-                    node_modules/.bin/netlify --version
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
-                '''
-            }
-            post {
-                always {
-                    junit 'jest-results/**/*.xml'
-                }
-            }
-        }    
     }
 
     post {
