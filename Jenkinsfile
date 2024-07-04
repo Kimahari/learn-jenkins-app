@@ -48,14 +48,10 @@ pipeline {
                         }
                         stage('Build_Docker') {
                             steps {
-                                script {
-                                    def branchName = sh(script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true).trim()
-                                    echo "Current branch is: ${branchName}"
-                                }
                                 sh '''
                                     echo "Running inside Node 22 container"
                                     echo "Building Docker the project..."
-                                    docker build -t learning-jenkins-app:${branchName} .
+                                    docker build -t learning-jenkins-app:${GIT_BRANCH} .
                                 '''
                             }
                         }
