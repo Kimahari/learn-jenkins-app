@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh '''
                     echo ${GIT_BRANCH} | sed "s///origin/${replace}/"
-                    bname=$(echo origin/main | sed "s/origin\///")
+                    bname=$(echo origin/main | sed 's/origin\\///')
                     echo $bname
                     echo "Running $bname inside Node 22 container"
                     echo "Installing dependencies..."
