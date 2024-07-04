@@ -23,13 +23,13 @@ pipeline {
             }
         }
         stage('Build_Docker') {
-            agent {
-                docker {
-                    image 'docker:dind'
-                    args 'command --storage-driver overlay2'
-                    reuseNode true
-                }
-            }
+            // agent {
+            //     docker {
+            //         image 'docker:dind'
+            //         args 'command --storage-driver overlay2'
+            //         reuseNode true
+            //     }
+            // }
             steps {
                 sh '''
                     echo "Running inside Node 22 container"
