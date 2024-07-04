@@ -46,6 +46,26 @@ pipeline {
                                 }
                             }
                         }
+                        stage('Build_Docker') {
+                            agent {
+                                docker {
+                                    image 'docker:dind'
+                                    reuseNode true
+                                }
+                            }
+                            steps {
+                                sh '''
+                                    echo "Running inside Node 22 container"
+                                    echo "Building Docker the project..."
+                                    docker run hello-world
+                                '''
+                            }
+                            post {
+                                always {
+                                    archiveArtifacts artifacts: 'build/**', followSymlinks: false
+                                }
+                            }
+                        }
                         stage('E2E-Test') {
                             agent {
                                 docker {
