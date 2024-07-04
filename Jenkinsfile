@@ -16,31 +16,10 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Running inside Node 22 container"
-                    echo "Installing dependencies..."
-                    npm ci
-                '''
-            }
-        }
-        stage('Build_Docker') {
-            // agent {
-            //     docker {
-            //         image 'docker:dind'
-            //         args 'command --storage-driver overlay2'
-            //         reuseNode true
-            //     }
-            // }
-            steps {
-                sh '''
-                    echo "Running inside Node 22 container"
-                    echo "Building Docker the project..."
-                    docker run hello-world
-                '''
-            }
-            post {
-                always {
-                    archiveArtifacts artifacts: 'build/**', followSymlinks: false
-                }
+                        echo "Running inside Node 22 container"
+                        echo "Installing dependencies..."
+                        npm ci
+                    '''
             }
         }
         stage('Build and Test in Parallel') {
@@ -67,25 +46,38 @@ pipeline {
                                 }
                             }
                         }
-                        stage('E2E-Test') {
-                            agent {
-                                docker {
-                                    image 'mcr.microsoft.com/playwright:v1.45.1-jammy'
-                                    reuseNode true
+                        stage('Build Docker and Test E2E in Parallel') {
+                            parallel {
+                                stage('Build_Docker') {
+                                    steps {
+                                        sh '''
+                                                echo "Running inside Node 22 container"
+                                                echo "Building Docker the project..."
+                                                docker run hello-world
+                                            '''
+                                    }
                                 }
-                            }
-                            steps {
-                                sh '''
-                                    echo "Running inside Node playwright container"
-                                    echo "Testing the project..."
-                                    node_modules/.bin/serve -s build &
-                                    sleep 10
-                                    npx playwright test
-                                '''
-                            }
-                            post {
-                                always {
-                                    junit 'playwright.results.xml'
+                                stage('E2E-Test') {
+                                    agent {
+                                        docker {
+                                            image 'mcr.microsoft.com/playwright:v1.45.1-jammy'
+                                            reuseNode true
+                                        }
+                                    }
+                                    steps {
+                                        sh '''
+                                                echo "Running inside Node playwright container"
+                                                echo "Testing the project..."
+                                                node_modules/.bin/serve -s build &
+                                                sleep 10
+                                                npx playwright test
+                                            '''
+                                    }
+                                    post {
+                                        always {
+                                            junit 'playwright.results.xml'
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -100,10 +92,10 @@ pipeline {
                     }
                     steps {
                         sh '''
-                            echo "Running inside Node 22 container"
-                            echo "Testing the project..."
-                            npm run test
-                        '''
+                                echo "Running inside Node 22 container"
+                                echo "Testing the project..."
+                                npm run test
+                            '''
                     }
                     post {
                         always {
@@ -122,21 +114,20 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Running inside Node 22 container..."
-                    echo "Publishing to Netlify..."
-                    node_modules/.bin/netlify --version
-                    node_modules/.bin/netlify status
-                    node_modules/.bin/netlify deploy --dir=build --prod
-                '''
+                        echo "Running inside Node 22 container..."
+                        echo "Publishing to Netlify..."
+                        node_modules/.bin/netlify --version
+                        node_modules/.bin/netlify status
+                        node_modules/.bin/netlify deploy --dir=build --prod
+                    '''
             }
             post {
                 always {
                     junit 'jest-results/**/*.xml'
                 }
             }
-        }    
+        }
     }
-
     post {
         always {
             cleanWs()
