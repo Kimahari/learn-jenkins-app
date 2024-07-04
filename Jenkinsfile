@@ -40,6 +40,11 @@ pipeline {
                                     npm run build
                                 '''
                             }
+                            post {
+                                always {
+                                    archiveArtifacts artifacts: 'build/**', followSymlinks: false
+                                }
+                            }
                         }
                         stage('E2E-Test') {
                             agent {
