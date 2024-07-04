@@ -51,9 +51,10 @@ pipeline {
                         stage('Build_Docker') {
                             steps {
                                 sh '''
-                                    echo "Running inside Node 22 container"
+                                    bname=$(echo origin/main | sed 's/origin\\///')
+                                    echo "Running $bname inside Node 22 container"
                                     echo "Building Docker the project..."
-                                    docker build -t learning-jenkins-app:${BRANCH_NAME} .
+                                    docker build -t learning-jenkins-app:$bname .
                                 '''
                             }
                         }
