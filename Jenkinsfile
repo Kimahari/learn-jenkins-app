@@ -51,7 +51,7 @@ pipeline {
                                 sh '''
                                     echo "Running inside Node 22 container"
                                     echo "Building Docker the project..."
-                                    docker run hello-world
+                                    docker build -t learning-jenkins-app .
                                 '''
                             }
                         }
@@ -122,7 +122,7 @@ pipeline {
                     junit 'jest-results/**/*.xml'
                 }
             }
-        }    
+        }
     }
 
     post {
