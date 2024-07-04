@@ -22,6 +22,27 @@ pipeline {
                 '''
             }
         }
+        stage('Build_Docker') {
+            agent {
+                docker {
+                    image 'docker:dind'
+                    args '--storage-driver overlay2'
+                    reuseNode true
+                }
+            }
+            steps {
+                sh '''
+                    echo "Running inside Node 22 container"
+                    echo "Building Docker the project..."
+                    docker run hello-world
+                '''
+            }
+            post {
+                always {
+                    archiveArtifacts artifacts: 'build/**', followSymlinks: false
+                }
+            }
+        }
         stage('Build and Test in Parallel') {
             parallel {
                 stage('Build and E2E') {
@@ -38,27 +59,6 @@ pipeline {
                                     echo "Running inside Node 22 container"
                                     echo "Building the project..."
                                     npm run build
-                                '''
-                            }
-                            post {
-                                always {
-                                    archiveArtifacts artifacts: 'build/**', followSymlinks: false
-                                }
-                            }
-                        }
-                        stage('Build_Docker') {
-                            agent {
-                                docker {
-                                    image 'docker:dind'
-                                    args '--storage-driver overlay2'
-                                    reuseNode true
-                                }
-                            }
-                            steps {
-                                sh '''
-                                    echo "Running inside Node 22 container"
-                                    echo "Building Docker the project..."
-                                    docker run hello-world
                                 '''
                             }
                             post {
