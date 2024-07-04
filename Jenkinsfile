@@ -50,6 +50,7 @@ pipeline {
                             agent {
                                 docker {
                                     image 'docker:dind'
+                                    command '--storage-driver overlay2'
                                     reuseNode true
                                 }
                             }
